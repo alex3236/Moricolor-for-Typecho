@@ -154,10 +154,10 @@ if ($this->is('index')) {
             <i class="fui-user"></i>
           </a>
         <?php elseif ($GLOBALS['oauth'] == 'on') : ?> · 
-          <a id="oauth" href="#" class="fui-lock"></a>
+          <a id="oauth" href="#" class="fui-radio-unchecked"></a>
         <?php elseif ($GLOBALS['oauth'] == 'admin') : ?> · 
           <a href="<?php $this->options->adminUrl(); ?>">
-            <i class="fui-user"></i>
+            <i class="fui-radio-unchecked"></i>
           </a>
         <?php endif; ?>
       </span>
