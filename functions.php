@@ -149,3 +149,35 @@ function change_fontweight($w)
     }
     return $rst;
 }
+//下一篇
+function theNext($widget)
+{
+$t = Typecho_Widget::widget('Widget_Archive@1');//@的作用我之前也有讲过，就是用来区分的，这里的$t就是定义的$this
+$db = Typecho_Db::get();
+$sql = $db->select()->from('table.contents')
+->where('table.contents.created > ?', $widget->created)
+->where('table.contents.status = ?', 'publish')
+->where('table.contents.created <= ?', time())
+->where('table.contents.type = ?', $widget->type)
+->where('table.contents.password IS NULL')
+->order('table.contents.created', Typecho_Db::SORT_ASC)
+->limit(1);//sql查询下一篇文章
+$db->fetchAll($sql, array($t, 'push'));//这个代码就是如何将查询结果封到$this里的
+return $t;//返回变量
+}
+//上一篇 
+function thePrev($widget)
+{
+$t = Typecho_Widget::widget('Widget_Archive@2');//@的作用我之前也有讲过，就是用来区分的，@后面参数随便只要和上边的不一样就行
+$db = Typecho_Db::get();
+$sql = $db->select()->from('table.contents')
+->where('table.contents.created < ?', $widget->created)
+->where('table.contents.status = ?', 'publish')
+->where('table.contents.created <= ?', time())
+->where('table.contents.type = ?', $widget->type)
+->where('table.contents.password IS NULL')
+->order('table.contents.created', Typecho_Db::SORT_DESC)
+->limit(1);//sql查询上一篇文章
+$db->fetchAll($sql, array($t, 'push'));
+return $t;//返回变量
+}

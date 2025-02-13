@@ -5,9 +5,9 @@
  * 如同她的名字一样，给人以一种自然、恬静的文字阅读体验。
  * 本项目属于 ProjectNatureSimple
  * @package Moricolor
- * @author Trii Hsia
- * @version Chapter I (v1.52)
- * @link https://yumoe.com/
+ * @author Trii Hsia, Modified by Alex3236
+ * @version Chapter II (v1.52-mod)
+ * @link https://alex3236.top/
  */
 
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
@@ -18,12 +18,7 @@ $i = 0;
 <div id="main" class="container">
   <div id="main-index" style="display: none;">
     <?php $totalpages = ceil($this->getTotal() / $this->parameter->pageSize); ?>
-    <?php if ($this->is('index') && $this->_currentPage == 1) {
-      echo '<h4>記事</h4>';
-    } ?>
-    <?php if ($this->is('index') && $this->_currentPage != 1) {
-      echo '<h4>記事 · ' . $this->_currentPage . ' / ' . $totalpages . '</h4>';
-    } ?>
+    <h4>纪事</h4>
     <?php while ($this->next()) : ?>
       <?php
       require 'config.php';
@@ -38,11 +33,13 @@ $i = 0;
       <article>
         <dl class="dl-horizontal">
           <dt>
-            <a style="color:#34495e;" data-toggle="collapse" href="#<?php echo $i ?>" aria-expanded="false" aria-controls="<?php $this->title() ?>">
+            <a data-toggle="collapse" href="#<?php echo $i ?>" aria-expanded="false" aria-controls="<?php $this->title() ?>">
               <time datetime="<?php $this->date('c'); ?>" itemprop="datePublished"><?php $this->date('M j, Y'); ?></time>
             </a>
           </dt>
-          <dd><a itemtype="url" href="<?php $this->permalink() ?>"><?php $this->title() ?></a></span></dd>
+          <dd><a class="headline" itemtype="url" href="<?php $this->permalink() ?>"><?php $this->title() ?></a></span></dd>
+          <dt><small class="disabled"><?php $this->date('H:m'); ?></small></dt>
+
           <dd class="<?php echo $collapse ?>" id="<?php echo $i ?>">
             <?php
             if ($GLOBALS['index_QuickPreview_Img'] == 'on') {
@@ -62,57 +59,31 @@ $i = 0;
     <?php endwhile; ?>
   </div>
 
-  <div id="pagenav" class="text-center" style="display: none;">
-    <ul class="pager">
-      <li class="previous">
+  <div id="pagenav" class="text-right" style="display: none;">
+    <div class="arrow-container">
         <?php
-        $this->pageLink('<span><i class="fui-arrow-left"></i></span>', 'next');
+        $this->pageLink('<span><i class="fui-triangle-left-large"></i></span>', 'next');
         if ($this->is('index') && $this->_currentPage == $totalpages) {
-          echo '<a title="没有惹" data-toggle="tooltip"><span><i class="fui-arrow-left"></i></span></a>';
+          echo '<a class="disabled"><span><i class="fui-triangle-left-large"></i></span></a>';
         }
         ?>
-      </li>
-
-      <!-- Make dropdown appear above pagination -->
-      <li class="pagination-dropdown dropup">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <span class="fui-list"></span>
-        </a>
-        <!-- Dropdown menu -->
-        <ul class="dropdown-menu dropdown-menu-inverse" style="margin-bottom:15px;">
-          <?php if ($GLOBALS['tools_Pages_if'] == 'on') : ?>
-            <?php
-            $pages = $GLOBALS['tools_Pages'];
-            $titles = array_keys($GLOBALS['tools_Pages']);
-            for ($i = 0; $i < count($pages); $i++) {
-              echo '<li><a href="' . $pages[$titles[$i]] . '">' . $titles[$i] . '</a></li>';
-            }
-            ?>
-          <?php else : ?>
-            <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
-            <?php while ($pages->next()) : ?>
-              <li><a href="<?php $pages->permalink(); ?>"><?php $pages->title(); ?></a></li>
-            <?php endwhile; ?>
-          <?php endif; ?>
-        </ul>
-      </li>
-
-      <li class="next">
+        <?php if ($this->is('index') && $this->_currentPage != 1) {
+          echo '<small>' . $this->_currentPage . ' / ' . $totalpages . '</small>';
+        } ?>
         <?php
-        $this->pageLink('<span><i class="fui-arrow-right"></i></span>');
+        $this->pageLink('<span><i class="fui-triangle-right-large"></i></span>');
         if ($this->is('index') && $this->_currentPage == 1) {
-          echo '<a title="没有惹" data-toggle="tooltip"><span><i class="fui-arrow-right"></i></span></a>';
+          echo '<a class="disabled"><span><i class="fui-triangle-right-large"></i></span></a>';
         }
         ?>
-      </li>
-    </ul>
+    </div>
   </div>
 
   <div id="bottomtools" style="display: none;">
     <?php
     $ifrun = $GLOBALS['bottomTools'];
     if ($ifrun == 'on') {
-      echo '<h6>(ฅ´ω`ฅ)</h6><small><ul>';
+      echo '<h6>ヾ(•ω•`)o</h6><small><ul>';
       echo '<section class="bottomtool">';
       //
       //一言
@@ -121,14 +92,14 @@ $i = 0;
       }
       //分类
       if ($GLOBALS['bottomTools_category'] == 'on') {
-        echo '<span style="padding-right: 1px;">Category</span>';
+        echo '<span style="padding-right: 1px;">Categories</span>';
         $this->widget('Widget_Metas_Category_List')
           ->parse('&nbsp; · &nbsp;<a style="color:#95A5A6;text-shadow: 0 0 1px rgba(0,0,0,.1);" href="{permalink}"> &{name} </a>');
         echo '<br>';
       }
       //标签
       if ($GLOBALS['bottomTools_tag'] == 'on') {
-        echo '<span>Tag</span>';
+        echo '<span>Tags</span>';
         $this->widget('Widget_Metas_Tag_Cloud')->to($tags);
         while ($tags->next()) :
           echo '&nbsp; · &nbsp;<a href="' . $tags->permalink . '" style="color:#95A5A6;text-shadow: 0 0 1px rgba(0,0,0,.1);">' . $tags->name . '</a>';
@@ -137,11 +108,17 @@ $i = 0;
       }
       //页面
       if ($GLOBALS['bottomTools_page'] == 'on') {
-        echo '<span>Page</span>';
+        echo '<span>Page & Links</span>';
         $this->widget('Widget_Contents_Page_List')->to($pages);
         while ($pages->next()) :
-          echo '&nbsp; · &nbsp;<a href="' . $pages->permalink . '" style="color:#95A5A6;text-shadow: 0 0 1px rgba(0,0,0,.1);">' . $pages->title . '</a>';
+          echo '&nbsp; · &nbsp;<a href="' . $pages->permalink . '" style="color:#95A5A6;text-shadow: 0 0 1px rgba(0,0,0,.1);">#' . $pages->title . '</a>';
         endwhile;
+        $customPages = $GLOBALS['tools_Pages'];
+        $titles = array_keys($GLOBALS['tools_Pages']);
+        for ($i = 0; $i < count($customPages); $i++) {
+          echo '&nbsp; · &nbsp;<a href="' . $customPages[$titles[$i]] . '" style="color:#95A5A6;text-shadow: 0 0 1px rgba(0,0,0,.1);">/' . $titles[$i] . '</a>';
+        }
+        
         echo '<br>';
       }
       echo '</section>';
@@ -149,7 +126,7 @@ $i = 0;
       //
       //搜索
       if ($GLOBALS['bottomTools_search'] == 'on') {
-        echo '<form method="post">';
+        echo '<form method="post" class="searchbar">';
         echo '<input autocomplete="off" name="s" type="text" class="form-control input-sm" placeholder="Search anything here~" />';
         echo '</form>';
       }
@@ -160,7 +137,7 @@ $i = 0;
 </div>
 <?php if ($GLOBALS['beta_MoriGarden'] == 'on') : ?>
   <div id="thatsi" style="display:none;margin-top: 20px;">
-    <center><a style="color:#34495e;" href="javascript:void(0)"><i id="getT" class="zmdi zmdi-chevron-down zmdi-hc-2x"></i></a></center>
+    <center><a href="javascript:void(0)"><i id="getT" class="zmdi zmdi-chevron-down zmdi-hc-2x"></i></a></center>
   </div>
 <?php endif; ?>
 <?php $this->need('footer.php'); ?>

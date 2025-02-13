@@ -77,6 +77,14 @@
     }
   });
 
+  $("#oauth").click(function() {
+    var iWidth = 360;
+    var iHeight = 620;
+    var iTop = (window.screen.availHeight - 30 - iHeight) / 2;
+    var iLeft = (window.screen.availWidth - 10 - iWidth) / 2;
+    window.open('/oauth/github/', '_blank', 'height=' + iHeight + ',,innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=0,titlebar=no');
+  });
+
   $(function() {
     $('[data-toggle=tooltip]').tooltip();
   });
@@ -126,11 +134,38 @@ if ($this->is('index')) {
 }
 ?>
 
-<footer id="footer" class="container" style="background:rgba(255, 255, 255, 0);display:none;">
+<footer id="footer" class="footer container" style="background:rgba(255, 255, 255, 0);display:none;">
   <hr>
-  <div style="text-align:center;padding-bottom:9px;">
-    <p>&copy; <?php echo date('Y'); ?> <a href="<?php $this->options->siteUrl(); ?>"><?php $this->options->title(); ?></a>.
-      <?php _e('Using <a target="_blank" href="http://www.typecho.org">Typecho</a> & <a target="_blank" href="https://github.com/txperl/Moricolor-for-Typecho">Moricolor</a>'); ?>.</p>
+  <div class="text-right">
+    <p>
+      <?php if (!$this->is('index')) : ?>
+        <a class="float-left" href="<?php $this->options->siteUrl(); ?>">
+          <?php $this->options->title(); ?>.
+        </a>
+      <?php endif; ?>
+      
+      <span>
+        <a target="_blank" href="<?php echo $GLOBALS['ICP_url'] ?>"><?php echo $GLOBALS['ICP'] ?></a> · 
+        <a target="_blank" href="<?php echo $GLOBALS['Github_url'] ?>">
+          <i class="fui-github"></i>
+        </a>
+        <?php if ($this->user->hasLogin()) : ?>  · 
+          <a href="<?php $this->options->adminUrl(); ?>">
+            <i class="fui-user"></i>
+          </a>
+        <?php elseif ($GLOBALS['oauth'] == 'on') : ?> · 
+          <a id="oauth" href="#" class="fui-lock"></a>
+        <?php elseif ($GLOBALS['oauth'] == 'admin') : ?> · 
+          <a href="<?php $this->options->adminUrl(); ?>">
+            <i class="fui-user"></i>
+          </a>
+        <?php endif; ?>
+      </span>
+    </p>
+    <p>
+      &copy; <?php echo date('Y'); ?> <a href="<?php echo $GLOBALS['Homepage'] ?>"><?php echo $GLOBALS['name']; ?></a>.
+      <span style="opacity:.5">自豪地采用 <a target="_blank" href="http://www.typecho.org">Typecho</a> & <a target="_blank" href="https://github.com/txperl/Moricolor-for-Typecho">Moricolor</a></span>
+    </p>
   </div>
 </footer>
 <?php $this->footer(); ?>

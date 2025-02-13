@@ -3,10 +3,12 @@
 
 <div id="main" class="container">
     <div id="main-page" role="main" style="display: none;">
-        <article>
-            <blockquote class="pull-right">
-                <h6><?php $this->title() ?></h6>
-            </blockquote>
+        <article class="post">
+            <?php if($this->user->hasLogin()):?>
+                <a class="headline-btn" href="/admin/write-page.php?cid=<?php echo $this->cid;?>">编辑</a>
+            <?php endif;?>
+            <h3 itemprop="name headline" class="headline"><?php $this->title() ?></h3>
+            <hr>
             <div class="clearfix"></div>
             <div class="post-content" itemprop="articleBody">
                 <?php $this->content(); ?>

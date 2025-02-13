@@ -1,26 +1,33 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 <?php $this->need('header.php'); ?>
 
+<?php
+$nextPost = theNext($this);
+$prevPost = thePrev($this);
+?>
+
 <div id="main" class="container">
     <div id="main-post" role="main" itemscope itemtype="http://schema.org/BlogPosting" style="display: none;">
-        <article class="post" style="padding-top: 20px;">
-            <h2 itemprop="name headline" style="font-weight: normal;"><?php $this->title() ?></h2>
+        <article class="post">
+            <?php if($this->user->hasLogin()):?>
+                <a class="headline-btn" href="/admin/write-post.php?cid=<?php echo $this->cid;?>">编辑</a>
+            <?php endif;?>
+            <h3 itemprop="name headline" class="headline"><?php $this->title() ?></h3>
             <div class="text-right">
                 <?php if ($GLOBALS['style_TextBar'] == '1') : ?>
                     <div class="text-bar">
+                        <p class="float-left arc-date" style="padding: .5em">Floatinh</p>
                         <a href="<?php $this->options->siteUrl(); ?>" class="fui-home"></a>
                         <a id="tor_show" href="javascript:void(0)" class="fui-list-bulleted"></a>
                         <a id="comment_go" href="#comments" class="fui-bubble"></a>
-                        <a style="font-size: 30px;margin-left: 1px;">·</a>
-                        <a href="https://twitter.com/intent/tweet?url=<?php $this->permalink() ?>" target="_blank" rel="nofollow" data-placement="bottom" data-toggle="tooltip" title="Twitter" class="fui-twitter"></a>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php $this->permalink() ?>" target="_blank" rel="nofollow" data-placement="bottom" data-toggle="tooltip" title="Facebook" class="fui-facebook"></a>
-                        <a href="http://service.weibo.com/share/share.php?url=<?php $this->permalink() ?>&title=<?php $this->title() ?>" target="_blank" rel="nofollow" data-placement="bottom" data-toggle="tooltip" title="微博" class="fui-bookmark"></a>
-                        <a href="javascript: actCopyLink();" rel="nofollow" data-placement="bottom" data-toggle="tooltip" title="拷贝文章链接" class="fui-export"></a>
                     </div>
                     <div class="post-info">
                         <span class="post-info-n"><?php $this->category(' '); ?></span>
-                        <?php $this->tags(' ', true, '<a>no tag</a>'); ?>
+                        <?php $this->tags(' ', true, ''); ?>
                         <a><time datetime="<?php $this->date('c'); ?>" itemprop="datePublished"><?php $this->date('F j, Y'); ?></time></a>
+                        <?php if(isset($this->fields->weather)): ?>
+                            <a class="weather"><?php echo $this->fields->weather; ?></a>
+                        <?php endif; ?>
                     </div>
                 <?php endif; ?>
                 <?php if ($GLOBALS['style_TextBar'] == '0') : ?>
@@ -40,30 +47,28 @@
         </article>
     </div>
 
-    <center>
-        <div id="postnav" style="display: none;">
-            <ul class="pager">
-                <li class="previous">
-                    <a href="<?php $this->options->siteUrl(); ?>">
-                        <span class="fui-home"></span>
-                    </a>
-                </li>
-                <li class="next" id="outcomment">
-                    <a href="javascript:void(0)">
-                        <span class="fui-chat"></span>
-                    </a>
-                </li>
-
-                <li class="previous">
-                    <?php $this->thePrev('%s', '<a>Not left !!</a>'); ?>
-                </li>
-
-                <li class="next">
-                    <?php $this->theNext('%s', '<a>Coming soon</a>'); ?>
-                </li>
-            </ul>
-        </div>
-    </center>
+    <div id="postnav" style="display: none;">
+        <?php if ($prevPost->have() and $nextPost->permalink != $this->permalink) : ?>
+            <div class="text-left">
+                <a href="<?php $prevPost->permalink() ?>">
+                    <small>
+                        <i class="fui-arrow-left"></i>
+                        <?php $prevPost->title() ?>
+                    </small>
+                </a>
+            </div>
+        <?php endif; ?>
+        <?php if ($nextPost->have() and $nextPost->permalink != $this->permalink) : ?>
+            <div class="text-right">
+                <a href="<?php $nextPost->permalink() ?>">
+                    <small>
+                        <?php $nextPost->title() ?>
+                        <i class="fui-arrow-right"></i>
+                    </small>
+                </a>
+            </div>
+        <?php endif; ?>
+    </div>
     <?php $this->need('comments.php'); ?>
 
     <div class="post-tor-content">

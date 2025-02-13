@@ -60,7 +60,7 @@ $this->need('header.php'); ?>
           if ($year != $year_tmp) {
             $year = $year_tmp;
             $output .= '<section id="year" style="overflow:hidden;">';
-            $output .= '<h5><a style="color:#34495e;" data-toggle="collapse" href="#' . $year . '" aria-expanded="false" aria-controls="' . $year . '">' . $year . '</a></h5>'; //输出年份
+            $output .= '<h5><a data-toggle="collapse" href="#' . $year . '" aria-expanded="false" aria-controls="' . $year . '">' . $year . '</a></h5>'; //输出年份
             $output .= '<div class="' . $collapse . '" id="' . $year . '">';
           }
           if ($mon != $mon_tmp) {

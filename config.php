@@ -3,19 +3,32 @@
 // 'off'或留空 为关闭
 
 //Pages -换页导航中间的三条杠！
-$GLOBALS['tools_Pages_if'] = 'off'; //是否开启自定义链接
+// $GLOBALS['tools_Pages_if'] = 'off'; //是否开启自定义链接
 $GLOBALS['tools_Pages'] = array(
-    '{your_title}' => '{your_url}',
-    'Moricolor' => 'https://github.com/txperl/Moricolor-for-Typecho'
+    '关于我' => '//alex3236.top',
 );
+
+$GLOBALS['name'] = 'Alex3236';
 
 //底部小工具
 $GLOBALS['bottomTools'] = 'on';    //总
 $GLOBALS['bottomTools_hitokoto'] = 'on'; //一言
 $GLOBALS['bottomTools_category'] = 'on'; //分类
 $GLOBALS['bottomTools_tag'] = 'off'; //标签
-$GLOBALS['bottomTools_page'] = 'off'; //页面
+$GLOBALS['bottomTools_page'] = 'on'; //页面
 $GLOBALS['bottomTools_search'] = 'on'; //搜索
+
+// ICP
+$GLOBALS['ICP'] = '萌ICP备20233236';
+$GLOBALS['ICP_url'] = 'https://icp.gov.moe/?keyword=20233236';
+
+// 个人信息
+$GLOBALS['Github_url'] = 'https://github.com/alex3236';
+$GLOBALS['Homepage'] = 'https://alex3236.top';
+
+// 按钮
+// 'on' 跳转 OAuth，'off' 为关闭，'admin' 跳转登录页
+$GLOBALS['oauth'] = 'on';
 
 //主页
 $GLOBALS['index_QuickPreview'] = '1'; //每页默认显示 X 个快速预览

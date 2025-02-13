@@ -36,7 +36,7 @@ $index_img = $GLOBALS['index_Image'];
             'search'    =>  _t('%s'),
             'tag'       =>  _t('%s'),
             'author'    =>  _t('%s')
-          ), '', ' - '); ?><?php $this->options->title(); ?></title>
+          ), '', ' - '); ?><?php $this->options->title(); ?> | <?php echo $GLOBALS['name']; ?></title>
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.2.2/css/vendor/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/flat-ui/2.2.2/css/flat-ui.min.css" rel="stylesheet">
@@ -44,23 +44,33 @@ $index_img = $GLOBALS['index_Image'];
   <link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" rel="stylesheet">
   <link href="<?php $this->options->themeUrl('./css/zoom.css'); ?>" rel="stylesheet">
   <link href="<?php $this->options->themeUrl('./css/mori.css'); ?>" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪐</text></svg>">
 
   <?php $this->header(); ?>
 </head>
 
 <body>
   <header>
-    <?php if (!$this->is('post')) : ?>
+    <?php if ($this->is('post') or ($this->is('page'))) : ?>
+      <div class="container" style="margin-top: 1.5em; margin-bottom: 1em;">
+        <p class="description" style="margin: 0">
+          <a id="logo" href="<?php $this->options->siteUrl(); ?>">
+            <span class="headline"><?php $this->options->title() ?></span>
+          </a>
+           · 
+          <?php $this->options->description() ?>
+        </p>
+      </div>
+    <?php else : ?>
       <div class="container" id="main">
         <a id="logo" href="<?php $this->options->siteUrl(); ?>">
           <?php if ($this->options->logoUrl) : ?>
             <img src="<?php $this->options->logoUrl() ?>" alt="<?php $this->options->title() ?>" />
           <?php endif; ?>
-          <h1 style="color: #34495e;"><?php $this->options->title() ?></h1>
+          <h3 class="headline"><?php $this->options->title() ?></h3>
         </a>
         <p class="description"><?php $this->options->description() ?></p>
         <hr>
       </div>
     <?php endif; ?>
-
   </header>
