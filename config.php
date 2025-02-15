@@ -31,7 +31,7 @@ $GLOBALS['Homepage'] = 'https://alex3236.top';
 $GLOBALS['oauth'] = 'on';
 
 //主页
-$GLOBALS['index_QuickPreview'] = '1'; //每页默认显示 X 个快速预览
+$GLOBALS['index_QuickPreview'] = '15'; //每页默认显示 X 个快速预览
 $GLOBALS['index_QuickPreview_Img'] = 'off'; //文章预览是否显示图片
 
 //样式
