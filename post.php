@@ -1,11 +1,6 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 <?php $this->need('header.php'); ?>
 
-<?php
-$nextPost = theNext($this);
-$prevPost = thePrev($this);
-?>
-
 <div id="main" class="container">
     <div id="main-post" role="main" itemscope itemtype="http://schema.org/BlogPosting" style="display: none;">
         <article class="post">
@@ -16,7 +11,9 @@ $prevPost = thePrev($this);
             <div class="text-right">
                 <?php if ($GLOBALS['style_TextBar'] == '1') : ?>
                     <div class="text-bar">
-                        <p class="float-left arc-date" style="padding: .5em">Floatinh</p>
+                        <p class="float-left arc-date" style="padding: .5em">
+                            Last modified: <?php echo date('M j, Y' , $this->modified); ?>
+                        </p>
                         <a href="<?php $this->options->siteUrl(); ?>" class="fui-home"></a>
                         <a id="tor_show" href="javascript:void(0)" class="fui-list-bulleted"></a>
                         <a id="comment_go" href="#comments" class="fui-bubble"></a>
@@ -26,7 +23,12 @@ $prevPost = thePrev($this);
                         <?php $this->tags(' ', true, ''); ?>
                         <a><time datetime="<?php $this->date('c'); ?>" itemprop="datePublished"><?php $this->date('F j, Y'); ?></time></a>
                         <?php if(isset($this->fields->weather)): ?>
-                            <a class="weather"><?php echo $this->fields->weather; ?></a>
+                            <span class="post-info-n">
+                                <a class="weather">
+                                    <i class="zmdi zmdi-cloud" style="margin-right:.2em"></i>
+                                    <?php echo $this->fields->weather; ?>
+                                </a>
+                            </span>
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
@@ -48,26 +50,33 @@ $prevPost = thePrev($this);
     </div>
 
     <div id="postnav" style="display: none;">
-        <?php if ($prevPost->have() and $nextPost->permalink != $this->permalink) : ?>
-            <div class="text-left">
-                <a href="<?php $prevPost->permalink() ?>">
-                    <small>
-                        <i class="fui-arrow-left"></i>
-                        <?php $prevPost->title() ?>
-                    </small>
-                </a>
-            </div>
+        <?php if (!$this->parameter->preview) : ?>
+            <?php
+                $nextPost = theNext($this);
+                $prevPost = thePrev($this);
+            ?>
+            <?php if ($prevPost->have() and $nextPost->permalink != $this->permalink) : ?>
+                <div class="text-left">
+                    <a href="<?php $prevPost->permalink() ?>">
+                        <small>
+                            <i class="fui-arrow-left"></i>
+                            <?php $prevPost->title() ?>
+                        </small>
+                    </a>
+                </div>
+            <?php endif; ?>
+            <?php if ($nextPost->have() and $nextPost->permalink != $this->permalink) : ?>
+                <div class="text-right">
+                    <a href="<?php $nextPost->permalink() ?>">
+                        <small>
+                            <?php $nextPost->title() ?>
+                            <i class="fui-arrow-right"></i>
+                        </small>
+                    </a>
+                </div>
+            <?php endif; ?>
         <?php endif; ?>
-        <?php if ($nextPost->have() and $nextPost->permalink != $this->permalink) : ?>
-            <div class="text-right">
-                <a href="<?php $nextPost->permalink() ?>">
-                    <small>
-                        <?php $nextPost->title() ?>
-                        <i class="fui-arrow-right"></i>
-                    </small>
-                </a>
-            </div>
-        <?php endif; ?>
+        
     </div>
     <?php $this->need('comments.php'); ?>
 
