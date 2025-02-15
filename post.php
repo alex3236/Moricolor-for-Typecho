@@ -5,7 +5,9 @@
     <div id="main-post" role="main" itemscope itemtype="http://schema.org/BlogPosting" style="display: none;">
         <article class="post">
             <?php if($this->user->hasLogin()):?>
-                <a class="headline-btn" href="/admin/write-post.php?cid=<?php echo $this->cid;?>">编辑</a>
+                <a class="headline-btn" href="/admin/write-post.php?cid=<?php echo $this->cid;?>">
+                    <i class="zmdi zmdi-edit"></i>
+                </a>
             <?php endif;?>
             <h3 itemprop="name headline" class="headline"><?php $this->title() ?></h3>
             <div class="text-right">
