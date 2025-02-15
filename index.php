@@ -6,7 +6,7 @@
  * 本项目属于 ProjectNatureSimple
  * @package Moricolor
  * @author Trii Hsia, Modified by Alex3236
- * @version Chapter II (v1.52-mod)
+ * @version Chapter II (v1.61)
  * @link https://alex3236.top/
  */
 
